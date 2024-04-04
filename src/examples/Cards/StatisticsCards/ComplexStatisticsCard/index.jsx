@@ -58,9 +58,7 @@ function ComplexStatisticsCard({ color, title, count, footer, icon }) {
         {footer.icon && (
           <Icon
             sx={{
-              fontWeight: "bold",
               color: ({ palette: { info } }) => info.main,
-              mt: -0.5,
             }}
           >
             {footer.icon}

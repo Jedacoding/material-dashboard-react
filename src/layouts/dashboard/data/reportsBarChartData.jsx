@@ -14,6 +14,9 @@ Coded by www.creative-tim.com
 */
 
 export default {
-  labels: ["M", "T", "W", "T", "F", "S", "S"],
-  datasets: { label: "Sales", data: [50, 20, 10, 22, 50, 10, 40] },
+  labels: ["Optimis", "Energik", "Senang", "Percaya Diri", "Fokus", "Kelelahan", "Frustasi"],
+  datasets: {
+    label: "Total",
+    data: [50, 20, 10, 22, 50, 10, 40],
+  },
 };

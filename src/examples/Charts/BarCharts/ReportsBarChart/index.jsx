@@ -15,6 +15,9 @@ Coded by www.creative-tim.com
 
 import { useMemo } from "react";
 
+// react-router-dom components
+import { NavLink } from "react-router-dom";
+
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
@@ -44,7 +47,7 @@ import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function ReportsBarChart({ color, title, description, date, chart }) {
+function ReportsBarChart({ color, title, description, path, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
 
   return (
@@ -75,14 +78,14 @@ function ReportsBarChart({ color, title, description, date, chart }) {
             {description}
           </MDTypography>
           <Divider />
-          <MDBox display="flex" alignItems="center">
-            <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
-              <Icon>schedule</Icon>
-            </MDTypography>
-            <MDTypography variant="button" color="text" fontWeight="light">
-              {date}
-            </MDTypography>
-          </MDBox>
+          <NavLink to={path} className="hover-info">
+            <MDBox display="flex" alignItems="center" lineHeight={0}>
+              <Icon>checklist</Icon>
+              <MDTypography variant="button" fontWeight="regular" color="text">
+                &nbsp;Lihat Data
+              </MDTypography>
+            </MDBox>
+          </NavLink>
         </MDBox>
       </MDBox>
     </Card>
