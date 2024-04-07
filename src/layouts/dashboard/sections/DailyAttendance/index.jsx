@@ -1,17 +1,13 @@
 import React from "react";
-
-// @mui material components
 import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import TotalAttendance from "layouts/dashboard/components/TotalAttendance";
+import { formatDate } from "utils/time";
 
-// Data
-import data from "layouts/dashboard/components/TotalAttendances/data";
+function DailyAttendance({ cards }) {
+  console.log(cards);
 
-function TotalAttendances() {
-  const { total } = data();
   return (
     <Card>
       <MDBox
@@ -28,28 +24,20 @@ function TotalAttendances() {
           Absensi Siswa Hari Ini
         </MDTypography>
         <MDTypography variant="h6" color="white" fontWeight="light">
-          4 April 2024
+          {formatDate(new Date())}
         </MDTypography>
       </MDBox>
       <MDBox pt={3} display="flex" justifyContent="space-between" padding="1rem 2rem">
-        {total.map(({ text, count }) => (
-          <MDBox textAlign="center">
-            <MDTypography
-              variant="h5"
-              textTransform="capitalize"
-              color={text.color}
-              fontWeight="regular"
-            >
-              {text.label}
-            </MDTypography>
-            <MDTypography variant="h4" color="black" fontWeight="light">
-              {count}
-            </MDTypography>
-          </MDBox>
+        {cards.map((card, idx) => (
+          <TotalAttendance title={card.title} count={card.count} key={idx} />
         ))}
       </MDBox>
     </Card>
   );
 }
 
-export default TotalAttendances;
+DailyAttendance.defaultProps = {
+  cards: [],
+};
+
+export default DailyAttendance;

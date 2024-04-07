@@ -1,121 +1,65 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Grid from "@mui/material/Grid";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
-// Dashboard components
-import TotalAttendances from "layouts/dashboard/components/TotalAttendances";
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import DailyAttendanceSection from "./sections/DailyAttendance";
+import { dataMaster, dataReport, dataCharts } from "./data";
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+  const [masterData, setMasterData] = useState(dataMaster());
+  const [dailyReport, setDailyReport] = useState(dataReport());
+  const [charts, setCharts] = useState(dataCharts());
+
+  useEffect(() => {
+    callApi("http://localhost:8000/api");
+  }, []);
+
+  const callApi = async (endpoint) => {
+    try {
+      const { data } = await axios.get(endpoint + "/dashboard");
+
+      console.log("data", data);
+
+      setMasterData(dataMaster(data.count));
+      setDailyReport(dataReport(data.dailyReport));
+      setCharts(dataCharts(data.chart));
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    }
+  };
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="person"
-                title="Jumlah Siswa"
-                count={281}
-                footer={{
-                  icon: "check",
-                  label: "Terdaftar",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="star"
-                title="Jumlah Kelas"
-                count="2,300"
-                footer={{
-                  icon: "",
-                  label: "SMK 12369 HONGKONG",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="settings"
-                title="Jumlah Petugas"
-                count="+91"
-                footer={{
-                  icon: "",
-                  label: "Petugas & Administrator",
-                }}
-              />
-            </MDBox>
-          </Grid>
+          {masterData.map((card, index) => (
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <MDBox mb={1.5}>
+                <ComplexStatisticsCard {...card} />
+              </MDBox>
+            </Grid>
+          ))}
         </Grid>
 
         <MDBox mt={4.5}>
-          <TotalAttendances />
+          <DailyAttendanceSection cards={dailyReport} />
         </MDBox>
 
         <MDBox mt={6.5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="success"
-                  title="Statistik kehadiran siswa"
-                  description="Jumlah catatan dalam 7 hari terakhir."
-                  path="/"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <MDBox mb={3}>
-                <ReportsBarChart
-                  color="info"
-                  title="Analisis psikologi siswa"
-                  description="Jumlah catatan dalam 7 hari terakhir."
-                  path="/"
-                  chart={reportsBarChartData}
-                />
-              </MDBox>
-            </Grid>
+            {charts.map((chart, index) => (
+              <Grid item xs={12} md={6} lg={6} key={index}>
+                <MDBox mb={3}>
+                  <ReportsLineChart {...chart} />
+                </MDBox>
+              </Grid>
+            ))}
           </Grid>
         </MDBox>
       </MDBox>

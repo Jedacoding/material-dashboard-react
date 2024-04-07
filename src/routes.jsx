@@ -63,7 +63,6 @@ const routes = [
     key: "absen-siswa",
     icon: <Icon fontSize="small">checklist</Icon>,
     route: "/absen-siswa",
-    component: <Tables />,
   },
   {
     type: "collapse",
@@ -71,6 +70,7 @@ const routes = [
     key: "siswa",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/siswa",
+    component: <Tables />,
   },
   {
     type: "collapse",
