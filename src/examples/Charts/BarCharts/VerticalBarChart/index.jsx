@@ -64,7 +64,7 @@ function VerticalBarChart({ icon, title, description, height, chart }) {
   const { data, options } = configs(chart.labels || [], chartDatasets);
 
   const renderChart = (
-    <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
+    <MDBox>
       {title || description ? (
         <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
           {icon.component && (
@@ -106,7 +106,7 @@ function VerticalBarChart({ icon, title, description, height, chart }) {
     </MDBox>
   );
 
-  return title || description ? <Card>{renderChart}</Card> : renderChart;
+  return renderChart;
 }
 
 // Setting default values for the props of VerticalBarChart

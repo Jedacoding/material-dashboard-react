@@ -23,8 +23,6 @@ function Dashboard() {
     try {
       const { data } = await axios.get(endpoint + "/dashboard");
 
-      console.log("data", data);
-
       setMasterData(dataMaster(data.count));
       setDailyReport(dataReport(data.dailyReport));
       setCharts(dataCharts(data.chart));

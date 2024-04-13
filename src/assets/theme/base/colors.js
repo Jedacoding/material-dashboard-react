@@ -174,7 +174,7 @@ const colors = {
       dark: "#13a3d2",
     },
 
-    slack: {
+    whatsapp: {
       main: "#3aaf85",
       dark: "#329874",
     },

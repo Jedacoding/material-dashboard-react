@@ -23,7 +23,7 @@ function DailyAttendance({ cards }) {
         <MDTypography variant="h6" color="white">
           Absensi Siswa Hari Ini
         </MDTypography>
-        <MDTypography variant="h6" color="white" fontWeight="light">
+        <MDTypography variant="h6" fontSize={14} color="white" fontWeight="light">
           {formatDate(new Date())}
         </MDTypography>
       </MDBox>

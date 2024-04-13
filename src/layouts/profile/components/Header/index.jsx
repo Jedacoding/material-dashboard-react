@@ -66,51 +66,36 @@ function Header({ children }) {
 
   return (
     <MDBox position="relative" mb={5}>
-      <MDBox
-        display="flex"
-        alignItems="center"
-        position="relative"
-        minHeight="18.75rem"
-        borderRadius="xl"
-        sx={{
-          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
-            )}, url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "50%",
-          overflow: "hidden",
-        }}
-      />
       <Card
         sx={{
           position: "relative",
-          mt: -8,
-          mx: 3,
           py: 2,
           px: 2,
         }}
       >
-        <Grid container spacing={3} alignItems="center">
-          <Grid item>
+        <Grid
+          container
+          spacing={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Grid item display="flex" alignItems="center" gap={2}>
             <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />
-          </Grid>
-          <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
-                Richard Davis
+                Muhammad Budi
               </MDTypography>
               <MDTypography variant="button" color="text" fontWeight="regular">
-                CEO / Co-Founder
+                NIS 4268796018
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
+          <Grid item xs={12} md={6} lg={4}>
             <AppBar position="static">
               <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
                 <Tab
-                  label="App"
+                  label="Home"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
                       home
@@ -118,24 +103,17 @@ function Header({ children }) {
                   }
                 />
                 <Tab
-                  label="Message"
+                  label="Statistik"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      email
-                    </Icon>
-                  }
-                />
-                <Tab
-                  label="Settings"
-                  icon={
-                    <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      settings
+                      bar_chart
                     </Icon>
                   }
                 />
               </Tabs>
             </AppBar>
           </Grid>
+          <Grid item xs={12} md={6} lg={3}></Grid>
         </Grid>
         {children}
       </Card>

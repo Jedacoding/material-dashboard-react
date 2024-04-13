@@ -55,7 +55,7 @@ import {
   setOpenConfigurator,
 } from "context";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+function DashboardNavbar({ absolute, light, isMini, canSearch }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -135,9 +135,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            {/* <MDBox pr={1}>
-              <MDInput label="Search here" />
-            </MDBox> */}
+            {canSearch && (
+              <MDBox pr={1}>
+                <MDInput label="Search here" />
+              </MDBox>
+            )}
             <MDBox color={light ? "white" : "inherit"}>
               <IconButton
                 size="small"
@@ -173,6 +175,7 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
+  canSearch: false,
 };
 
 // Typechecking props for the DashboardNavbar
@@ -180,6 +183,7 @@ DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
+  canSearch: PropTypes.bool,
 };
 
 export default DashboardNavbar;
