@@ -3,6 +3,7 @@ import { Box, Typography, Modal } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import StudentDetail from "./StudentDetail";
 import MDButton from "components/MDButton";
+import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -28,7 +29,9 @@ export default function StudentModal({ student, open, handleClose }) {
                 {student ? (
                     <StudentDetail student={student} />
                 ) : (
-                    <Typography>Loading...</Typography>
+                    <MDTypography variant="h6" textAlign="center" color="info" fontWeight="light">
+                        Loading...
+                    </MDTypography>
                 )}
 
                 <Link to="/absen/catat">

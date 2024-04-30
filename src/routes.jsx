@@ -36,65 +36,87 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React layouts
+import Scan from "layouts/scan";
 import Dashboard from "layouts/dashboard";
 import Students from "layouts/students";
+import Classes from "layouts/classes";
+import Settings from "layouts/settings";
+import Absences from "layouts/absences";
+import AddAbsences from "layouts/absences/components/Add";
 import Profile from "layouts/profile";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 
 const routes = [
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
-  {
-    type: "collapse",
-    name: "Absensi Siswa",
-    key: "absen-siswa",
-    icon: <Icon fontSize="small">checklist</Icon>,
-    route: "/absen-siswa",
-  },
-  {
-    type: "collapse",
-    name: "Data Siswa",
-    key: "siswa",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/siswa",
-    component: <Students />,
-  },
-  {
-    type: "collapse",
-    name: "Data Kelas & Jurusan",
-    key: "kelas",
-    icon: <Icon fontSize="small">school</Icon>,
-    route: "/kelas",
-  },
-  {
-    type: "collapse",
-    name: "Generate Laporan",
-    key: "laporan",
-    icon: <Icon fontSize="small">print</Icon>,
-    route: "/laporan",
-  },
-  {
-    type: "collapse",
-    name: "Psikologi Siswa",
-    key: "psikolog-siswa",
-    icon: <Icon fontSize="small">healing</Icon>,
-    route: "/psikolog-siswa",
-  },
-  {
-    type: "collapse",
-    name: "Data Petugas",
-    key: "petugas",
-    icon: <Icon fontSize="small">computer</Icon>,
-    route: "/petugas",
-  },
+    {
+        type: "route",
+        name: "Scan",
+        key: "scan",
+        route: "/scan",
+        component: <Scan />,
+    },
+    {
+        type: "collapse",
+        name: "Dashboard",
+        key: "dashboard",
+        icon: <Icon fontSize="small">dashboard</Icon>,
+        route: "/dashboard",
+        component: <Dashboard />,
+    },
+    {
+        type: "collapse",
+        name: "Absensi Siswa",
+        key: "absen",
+        icon: <Icon fontSize="small">checklist</Icon>,
+        route: "/absen",
+        component: <Absences />,
+    },
+    {
+        type: "route",
+        name: "Tambah Absensi Siswa",
+        icon: <Icon fontSize="small">checklist</Icon>,
+        route: "/absen/tambah",
+        component: <AddAbsences />,
+    },
+    {
+        type: "collapse",
+        name: "Data Siswa",
+        key: "siswa",
+        icon: <Icon fontSize="small">person</Icon>,
+        route: "/siswa",
+        component: <Students />,
+    },
+    {
+        type: "collapse",
+        name: "Data Kelas & Jurusan",
+        key: "kelas",
+        icon: <Icon fontSize="small">school</Icon>,
+        route: "/kelas",
+        component: <Classes />,
+    },
+    {
+        type: "collapse",
+        name: "Generate Laporan",
+        key: "laporan",
+        icon: <Icon fontSize="small">print</Icon>,
+        route: "/laporan",
+    },
+    {
+        type: "collapse",
+        name: "Psikologi Siswa",
+        key: "psikolog-siswa",
+        icon: <Icon fontSize="small">healing</Icon>,
+        route: "/psikolog-siswa",
+    },
+    {
+        type: "collapse",
+        name: "Pengaturan",
+        key: "pengaturan",
+        icon: <Icon fontSize="small">settings</Icon>,
+        route: "/pengaturan",
+        component: <Settings />,
+    },
 ];
 
 export default routes;

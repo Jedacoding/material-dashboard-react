@@ -43,6 +43,15 @@ function StudentDetail({ student }) {
                     </TableRow>
                     <TableRow>
                         <TableCell component="th" scope="row">
+                            Kelas
+                        </TableCell>
+                        <TableCell>:</TableCell>
+                        <TableCell component="th" scope="row">
+                            {student.className}
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell component="th" scope="row">
                             Jenis Kelamin
                         </TableCell>
                         <TableCell>:</TableCell>

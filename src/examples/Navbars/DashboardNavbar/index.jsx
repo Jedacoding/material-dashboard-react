@@ -40,150 +40,172 @@ import NotificationItem from "examples/Items/NotificationItem";
 
 // Custom styles for DashboardNavbar
 import {
-  navbar,
-  navbarContainer,
-  navbarRow,
-  navbarIconButton,
-  navbarMobileMenu,
+    navbar,
+    navbarContainer,
+    navbarRow,
+    navbarIconButton,
+    navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
 
 // Material Dashboard 2 React context
 import {
-  useMaterialUIController,
-  setTransparentNavbar,
-  setMiniSidenav,
-  setOpenConfigurator,
+    useMaterialUIController,
+    setTransparentNavbar,
+    setMiniSidenav,
+    setOpenConfigurator,
+    setSearch,
 } from "context";
 
 function DashboardNavbar({ absolute, light, isMini, canSearch }) {
-  const [navbarType, setNavbarType] = useState();
-  const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
-  const [openMenu, setOpenMenu] = useState(false);
-  const route = useLocation().pathname.split("/").slice(1);
+    const [navbarType, setNavbarType] = useState();
+    const [controller, dispatch] = useMaterialUIController();
+    const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
+    const [openMenu, setOpenMenu] = useState(false);
+    const route = useLocation().pathname.split("/").slice(1);
 
-  useEffect(() => {
-    // Setting the navbar type
-    if (fixedNavbar) {
-      setNavbarType("sticky");
-    } else {
-      setNavbarType("static");
-    }
+    useEffect(() => {
+        // Setting the navbar type
+        if (fixedNavbar) {
+            setNavbarType("sticky");
+        } else {
+            setNavbarType("static");
+        }
 
-    // A function that sets the transparent state of the navbar.
-    function handleTransparentNavbar() {
-      setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
-    }
+        // A function that sets the transparent state of the navbar.
+        function handleTransparentNavbar() {
+            setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
+        }
 
-    /** 
+        /** 
      The event listener that's calling the handleTransparentNavbar function when 
      scrolling the window.
     */
-    window.addEventListener("scroll", handleTransparentNavbar);
+        window.addEventListener("scroll", handleTransparentNavbar);
 
-    // Call the handleTransparentNavbar function to set the state with the initial value.
-    handleTransparentNavbar();
+        // Call the handleTransparentNavbar function to set the state with the initial value.
+        handleTransparentNavbar();
 
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("scroll", handleTransparentNavbar);
-  }, [dispatch, fixedNavbar]);
+        // Remove event listener on cleanup
+        return () => window.removeEventListener("scroll", handleTransparentNavbar);
+    }, [dispatch, fixedNavbar]);
 
-  const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
-  const handleCloseMenu = () => setOpenMenu(false);
+    const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
+    const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+    const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+    const handleCloseMenu = () => setOpenMenu(false);
 
-  // Render the notifications menu
-  const renderMenu = () => (
-    <Menu
-      anchorEl={openMenu}
-      anchorReference={null}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-      open={Boolean(openMenu)}
-      onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
-    >
-      <NotificationItem icon={<Icon>exit_to_app</Icon>} title="Log Out" />
-    </Menu>
-  );
+    // Render the notifications menu
+    const renderMenu = () => (
+        <Menu
+            anchorEl={openMenu}
+            anchorReference={null}
+            anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+            }}
+            open={Boolean(openMenu)}
+            onClose={handleCloseMenu}
+            sx={{ mt: 2 }}
+        >
+            <NotificationItem icon={<Icon>exit_to_app</Icon>} title="Log Out" />
+        </Menu>
+    );
 
-  // Styles for the navbar icons
-  const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
-    color: () => {
-      let colorValue = light || darkMode ? white.main : dark.main;
+    // Styles for the navbar icons
+    const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
+        color: () => {
+            let colorValue = light || darkMode ? white.main : dark.main;
 
-      if (transparentNavbar && !light) {
-        colorValue = darkMode ? rgba(text.main, 0.6) : text.main;
-      }
+            if (transparentNavbar && !light) {
+                colorValue = darkMode ? rgba(text.main, 0.6) : text.main;
+            }
 
-      return colorValue;
-    },
-  });
+            return colorValue;
+        },
+    });
 
-  return (
-    <AppBar
-      position={absolute ? "absolute" : navbarType}
-      color="inherit"
-      sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
-    >
-      <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-        </MDBox>
-        {isMini ? null : (
-          <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            {canSearch && (
-              <MDBox pr={1}>
-                <MDInput label="Search here" />
-              </MDBox>
-            )}
-            <MDBox color={light ? "white" : "inherit"}>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearch(dispatch, value);
+    };
 
-              <MDButton variant="text" size="large" color="info" iconOnly>
-                <Icon sx={iconsStyle}>qr_code</Icon>
-              </MDButton>
+    return (
+        <AppBar
+            position={absolute ? "absolute" : navbarType}
+            color="inherit"
+            sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
+        >
+            <Toolbar sx={(theme) => navbarContainer(theme)}>
+                <MDBox
+                    color="inherit"
+                    mb={{ xs: 1, md: 0 }}
+                    sx={(theme) => navbarRow(theme, { isMini })}
+                >
+                    <Breadcrumbs
+                        icon="home"
+                        title={route[route.length - 1]}
+                        route={route}
+                        light={light}
+                    />
+                </MDBox>
+                {isMini ? null : (
+                    <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
+                        {canSearch && (
+                            <MDBox pr={1}>
+                                <MDInput label="Search here" onChange={handleSearch} />
+                            </MDBox>
+                        )}
+                        <MDBox color={light ? "white" : "inherit"}>
+                            <IconButton
+                                size="small"
+                                disableRipple
+                                color="inherit"
+                                sx={navbarMobileMenu}
+                                onClick={handleMiniSidenav}
+                            >
+                                <Icon sx={iconsStyle} fontSize="medium">
+                                    {miniSidenav ? "menu_open" : "menu"}
+                                </Icon>
+                            </IconButton>
 
-              <MDButton variant="text" size="large" color="info" onClick={handleOpenMenu}>
-                <Icon>account_circle</Icon>&nbsp; Superadmin
-              </MDButton>
+                            <Link to="/scan">
+                                <MDButton variant="text" size="large" color="info" iconOnly>
+                                    <Icon sx={iconsStyle}>qr_code</Icon>
+                                </MDButton>
+                            </Link>
 
-              {renderMenu()}
-            </MDBox>
-          </MDBox>
-        )}
-      </Toolbar>
-    </AppBar>
-  );
+                            <MDButton
+                                variant="text"
+                                size="large"
+                                color="info"
+                                onClick={handleOpenMenu}
+                            >
+                                <Icon>account_circle</Icon>&nbsp; Superadmin
+                            </MDButton>
+
+                            {renderMenu()}
+                        </MDBox>
+                    </MDBox>
+                )}
+            </Toolbar>
+        </AppBar>
+    );
 }
 
 // Setting default values for the props of DashboardNavbar
 DashboardNavbar.defaultProps = {
-  absolute: false,
-  light: false,
-  isMini: false,
-  canSearch: false,
+    absolute: false,
+    light: false,
+    isMini: false,
+    canSearch: false,
 };
 
 // Typechecking props for the DashboardNavbar
 DashboardNavbar.propTypes = {
-  absolute: PropTypes.bool,
-  light: PropTypes.bool,
-  isMini: PropTypes.bool,
-  canSearch: PropTypes.bool,
+    absolute: PropTypes.bool,
+    light: PropTypes.bool,
+    isMini: PropTypes.bool,
+    canSearch: PropTypes.bool,
 };
 
 export default DashboardNavbar;

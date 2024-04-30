@@ -2,7 +2,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDButton from "components/MDButton";
-import team2 from "assets/images/team-2.jpg";
+import { Avatar } from "@mui/material";
 
 function data(students = [], handleOpenModal = () => {}) {
     const Typography = ({ children }) => (
@@ -13,7 +13,7 @@ function data(students = [], handleOpenModal = () => {}) {
 
     const Profile = ({ image, name }) => (
         <MDBox display="flex" alignItems="center" lineHeight={1}>
-            <MDAvatar src={image} name={name} size="sm" />
+            <Avatar alt={name} src={image} size="sm" />
             <MDBox ml={2} lineHeight={1}>
                 <Typography>{name}</Typography>
             </MDBox>
@@ -26,12 +26,12 @@ function data(students = [], handleOpenModal = () => {}) {
             { Header: "Nama Siswa", accessor: "name", align: "left" },
             { Header: "Jeni Kelamin", accessor: "gender", align: "center" },
             { Header: "Kelas", accessor: "class", align: "center" },
-            { Header: "No HP", accessor: "phone", align: "center" },
+            { Header: "HP", accessor: "phone", align: "center" },
             { Header: "Aksi", accessor: "action", align: "center" },
         ],
         rows: students.map((student, uid) => ({
             no: <Typography>{uid + 1}</Typography>,
-            name: <Profile image={team2} name={student.name} />,
+            name: <Profile image={student.image} name={student.name} />,
             gender: <Typography>{student.gender}</Typography>,
             class: <Typography>{student.class}</Typography>,
             phone: <Typography>{student.phone}</Typography>,

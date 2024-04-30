@@ -10,22 +10,70 @@ import DataTable from "examples/Tables/DataTable";
 import studentsTableData from "layouts/students/data/studentsTableData";
 import Axios from "helpers/axios";
 import StudentModal from "./components/StudentModal";
+import { useMaterialUIController } from "context";
 
 function Students() {
     const [infoMessage, setInfoMessage] = useState("");
+    const [originalData, setOriginalData] = useState([]);
     const [table, setTable] = useState(studentsTableData());
     const [openModal, setOpenModal] = useState(false);
     const [student, setStudent] = useState(null);
+    const [controller] = useMaterialUIController();
+    const { search } = controller;
 
     useEffect(() => {
-        callApi();
+        const fetchData = async () => {
+            try {
+                setInfoMessage("Loading...");
+                const { data } = await Axios.get("/students");
+                if (data.length) {
+                    setOriginalData(data);
+                    setTable(studentsTableData(data, handleOpenModal));
+                    setInfoMessage("");
+                } else {
+                    setInfoMessage("No Data Found.");
+                }
+            } catch (error) {
+                console.error("Error fetching students data:", error);
+                setInfoMessage(error.message);
+            }
+        };
+
+        fetchData();
     }, []);
 
-    const handleOpenModal = async (studentId) => {
-        setOpenModal(true);
+    useEffect(() => {
+        if (search) {
+            const filteredData = originalData.filter((student) => {
+                return student.name.toLowerCase().includes(search.toLowerCase());
+            });
 
-        const { data } = await Axios.get(`/student/${studentId}`);
-        setStudent(data);
+            if (filteredData.length === 0) {
+                setInfoMessage("No Data Found.");
+            } else {
+                setInfoMessage("");
+            }
+
+            setTable(studentsTableData(filteredData, handleOpenModal));
+        } else {
+            if (originalData.length) {
+                setInfoMessage("");
+                setTable(studentsTableData(originalData, handleOpenModal));
+            }
+        }
+    }, [search]);
+
+    const handleOpenModal = async (studentId) => {
+        console.log("student id", studentId);
+
+        try {
+            const { data } = await Axios.get(`/students/${studentId}`);
+
+            setOpenModal(true);
+            setStudent(data);
+        } catch (error) {
+            console.log("error fetching data student:", error);
+        }
     };
 
     const handleCloseModal = () => {
@@ -33,27 +81,11 @@ function Students() {
         setStudent(null);
     };
 
-    const callApi = async () => {
-        try {
-            setInfoMessage("Loading...");
-            const { data } = await Axios.get("/student");
-
-            if (data.length) {
-                setTable(studentsTableData(data, handleOpenModal));
-                setInfoMessage("");
-            } else {
-                setInfoMessage("No Data Found.");
-            }
-        } catch (error) {
-            console.error("Error fetching students data:", error);
-            setInfoMessage(error.message);
-        }
-    };
-
     return (
         <DashboardLayout>
             <StudentModal student={student} open={openModal} handleClose={handleCloseModal} />
             <DashboardNavbar canSearch={true} />
+            {search && <MDTypography color="dark">Search for "{search}"</MDTypography>}
             <MDBox pt={6} pb={3}>
                 <Grid container spacing={6}>
                     <Grid item xs={12}>
@@ -67,23 +99,18 @@ function Students() {
                                 bgColor="info"
                                 borderRadius="lg"
                                 coloredShadow="info"
-                                display="flex"
-                                justifyContent="space-between"
-                                alignItems="center"
                             >
-                                <MDBox>
-                                    <MDTypography variant="h6" color="white">
-                                        Daftar Siswa
-                                    </MDTypography>
-                                    <MDTypography
-                                        variant="h6"
-                                        color="white"
-                                        fontWeight="light"
-                                        fontSize={14}
-                                    >
-                                        Angkatan 2023/2024
-                                    </MDTypography>
-                                </MDBox>
+                                <MDTypography variant="h6" color="white">
+                                    Daftar Siswa
+                                </MDTypography>
+                                <MDTypography
+                                    variant="h6"
+                                    color="white"
+                                    fontWeight="light"
+                                    fontSize={14}
+                                >
+                                    Angkatan 2023/2024
+                                </MDTypography>
                             </MDBox>
                             <MDBox pt={3}>
                                 <DataTable
